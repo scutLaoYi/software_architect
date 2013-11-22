@@ -43,21 +43,31 @@ if __name__ == '__main__':
 	language: Python 2.7
 	"""
 	playerList = [0]
-	totalLevel = 4
+	try:
+		totalLevel = int(sys.argv[1])
+		if totalLevel > 10:
+			print "参数过大，使用默认参数!"
+			totalLevel = 4
+	except :
+		print "未检测到参数，使用默认参数!"
+		totalLevel = 4
+	print "N皇后问题，黑板风格，N =", totalLevel
 	gameBoard = [0]
 	for i in range(1, totalLevel + 1):
 		playerList.append(createPlayer(i, totalLevel))
 		gameBoard.append(0)
 	
 	nowLevel = 1
+	counter = 0
 	while nowLevel > 0:
 		if playerList[nowLevel](gameBoard): 
 			if nowLevel < totalLevel:
 				nowLevel += 1
 			else:
-				print "found! ", gameBoard
+				print gameBoard[1:]
+				counter += 1
 		else:
 			nowLevel -= 1
+	print "解法总数 =", counter
 
-	
 

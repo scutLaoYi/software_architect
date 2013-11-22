@@ -4,7 +4,7 @@
 import os
 import sys
 
-global solutionCount
+solutionCount = 0
 
 def checkOK(level, gameMap):
 	u"""检测当前状态是否与已有的皇后冲突
@@ -26,18 +26,17 @@ def search(level, totalLevel, gameMap):
 	遍历当前层的所有位置，
 	找出可能位置并继续下层搜索
 	"""
+	global solutionCount
 	if level == totalLevel:
 		for i in range(1, totalLevel + 1):
 			gameMap[level] = i
-#			print "Testing...", i
 			if checkOK(level, gameMap):
-				print "found!", gameMap[1:]
-#				solutionCount += 1
+				print gameMap[1:]
+				solutionCount += 1
 	else:
 		for i in range(1, totalLevel + 1):
 			gameMap[level] = i
 			if checkOK(level, gameMap):
-#				print "Searching at level %d position: %d" % (level, i)
 				search(level + 1, totalLevel, gameMap)
 
 
@@ -59,9 +58,8 @@ if __name__ == '__main__':
 		totalLevel = 4
 		print u"命令行参数错误，使用默认参数4"
 
-	print u"程序运行中..."
-	print u"检测%d皇后问题的解法..." % totalLevel
+	print u"N皇后问题，调用返回风格，N =", totalLevel
 	gameMap = range(0, totalLevel+1)
 	search(level = 1, totalLevel = totalLevel, gameMap = gameMap)
-#	print u"解法总数：%d" % solutionCount
+	print u"解法总数 =",solutionCount
 

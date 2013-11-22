@@ -26,7 +26,6 @@ def queenPipe(nowList, totalLevel, nowLevel):
 	传入当前的可能解集，进行筛选，获取新一层的所有可能解集并返回
 	"""
 	solutionInThisLevel = []
-	print "level:%d" % nowLevel
 	for nowSolution in nowList[nowLevel-1]:
 		for i in range(1, totalLevel + 1):
 			if isOk(nowSolution, nowLevel, i):
@@ -34,7 +33,6 @@ def queenPipe(nowList, totalLevel, nowLevel):
 				tmpList.append(i)
 				solutionInThisLevel.append(tmpList)
 	nowList.append(solutionInThisLevel)
-	print u"解集 in this level:", solutionInThisLevel
 	return nowList
 
 def search(totalLevel):
@@ -51,6 +49,8 @@ def search(totalLevel):
 	for i in range(2, totalLevel+1):
 		nowList = queenPipe(nowList, totalLevel, i)
 #	通过逐层过滤，获取最终的解集数量
+	for solu in nowList[totalLevel]:
+		print solu[1:]
 
 	return len(nowList[totalLevel])
 
@@ -65,12 +65,13 @@ if __name__ == "__main__":
 	try:
 		totalLevel = int(sys.argv[1])
 		if totalLevel > 10:
-			print "illegal argument!"
+			print u"参数过大，使用默认参数4!"
 			totalLevel = 4
 	except :
 		totalLevel = 4
-		print "illegal argument!"
+		print u"未发现参数，使用默认参数4!"
 	
-	print "total amount:", search(totalLevel)
-	print "N=%d" % totalLevel
 
+	print u"N皇后问题，管道风格，N =", totalLevel
+	totalAmout = search(totalLevel)
+	print u"解法总数 =", totalAmout
