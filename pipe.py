@@ -4,21 +4,7 @@
 
 import os
 import sys
-
-def isOk(nowMap, nowLevel, nowPos):
-	u"""
-	检测当前状态是否与已有的皇后冲突
-		冲突存在则返回False,
-		否则返回True
-		"""
-	for i in range(1, nowLevel):
-		levelPos = nowMap[nowLevel - i]
-		if levelPos == nowPos or \
-					 levelPos == nowPos - i or \
-					 levelPos == nowPos + i:
-			return False
-	return True
-
+import checkOk 
 
 def queenPipe(nowList, totalLevel, nowLevel):
 	u"""
@@ -28,7 +14,7 @@ def queenPipe(nowList, totalLevel, nowLevel):
 	solutionInThisLevel = []
 	for nowSolution in nowList[nowLevel-1]:
 		for i in range(1, totalLevel + 1):
-			if isOk(nowSolution, nowLevel, i):
+			if checkOk.isOk(nowSolution, nowLevel, i):
 				tmpList = nowSolution[:]
 				tmpList.append(i)
 				solutionInThisLevel.append(tmpList)
@@ -64,7 +50,7 @@ if __name__ == "__main__":
 	totalLevel = 4
 	try:
 		totalLevel = int(sys.argv[1])
-		if totalLevel > 10:
+		if totalLevel > 14:
 			print u"参数过大，使用默认参数4!"
 			totalLevel = 4
 	except :

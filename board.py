@@ -4,20 +4,7 @@
 
 import os
 import sys
-
-def isOk(gameMap, level, nowPos):
-	u"""检测当前状态是否与已有的皇后冲突
-		冲突存在则返回False,
-		否则返回True
-		"""
-	for i in range(1, level):
-		levelPos = gameMap[level - i]
-		if levelPos == nowPos or \
-					 levelPos == nowPos - i or \
-					 levelPos == nowPos + i:
-			return False
-	return True
-
+import checkOk
 
 def createPlayer(level, totalLevel):
 	u"""
@@ -29,7 +16,7 @@ def createPlayer(level, totalLevel):
 	def playerFunction(gameBoard):
 		while gameBoard[level] < totalLevel:
 			gameBoard[level] += 1
-			if isOk(gameBoard, level, gameBoard[level]):
+			if checkOk.isOk(gameBoard, level, gameBoard[level]):
 				return True
 		gameBoard[level] = 0
 		return False

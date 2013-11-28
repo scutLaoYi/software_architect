@@ -3,22 +3,9 @@
 #Filename : returnStyle.py
 import os
 import sys
+import checkOk
 
 solutionCount = 0
-
-def checkOK(level, gameMap):
-	u"""检测当前状态是否与已有的皇后冲突
-		冲突存在则返回False,
-		否则返回True
-		"""
-	nowPos = gameMap[level]
-	for i in range(1, level):
-		levelPos = gameMap[level - i]
-		if levelPos == nowPos or \
-					 levelPos == nowPos - i or \
-					 levelPos == nowPos + i:
-			return False
-	return True
 
 def search(level, totalLevel, gameMap):
 	u"""
@@ -30,13 +17,13 @@ def search(level, totalLevel, gameMap):
 	if level == totalLevel:
 		for i in range(1, totalLevel + 1):
 			gameMap[level] = i
-			if checkOK(level, gameMap):
+			if checkOk.isOk(gameMap, level, gameMap[level]):
 				print gameMap[1:]
 				solutionCount += 1
 	else:
 		for i in range(1, totalLevel + 1):
 			gameMap[level] = i
-			if checkOK(level, gameMap):
+			if checkOk.isOk(gameMap, level, gameMap[level]):
 				search(level + 1, totalLevel, gameMap)
 
 
@@ -58,7 +45,7 @@ if __name__ == '__main__':
 		totalLevel = 4
 		print u"命令行参数错误，使用默认参数4"
 
-	print u"N皇后问题，调用返回风格，N =", totalLevel
+	print u"N皇后问题，回溯风格，N =", totalLevel
 	gameMap = range(0, totalLevel+1)
 	search(level = 1, totalLevel = totalLevel, gameMap = gameMap)
 	print u"解法总数 =",solutionCount
