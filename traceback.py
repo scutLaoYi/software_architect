@@ -4,8 +4,9 @@
 import os
 import sys
 import checkOk
+import timeit
 
-solutionCount = 0
+solutionCount = [0,]
 
 def search(level, totalLevel, gameMap):
 	u"""
@@ -18,8 +19,8 @@ def search(level, totalLevel, gameMap):
 		for i in range(1, totalLevel + 1):
 			gameMap[level] = i
 			if checkOk.isOk(gameMap, level, gameMap[level]):
-				print gameMap[1:]
-				solutionCount += 1
+				#print gameMap[1:]
+				solutionCount[0] += 1
 	else:
 		for i in range(1, totalLevel + 1):
 			gameMap[level] = i
@@ -35,18 +36,24 @@ if __name__ == '__main__':
 	language: Python 2.7
 	"""
 
-	totalLevel = 4;
-	try:
-		totalLevel = int(sys.argv[1])	
-		if totalLevel > 10:
-			print u"参数过大，使用默认参数4"
-			totalLevel = 4
-	except:
-		totalLevel = 4
-		print u"命令行参数错误，使用默认参数4"
+	totalLevel = int(sys.argv[1])
+	totalTimes = int(sys.argv[2])
+
+	assert(totalLevel > 0 and totalLevel < 12)
+	assert(totalTimes > 0 and totalTimes < 1000)
 
 	print u"N皇后问题，回溯风格，N =", totalLevel
+	time = timeit.timeit(
+			"""
 	gameMap = range(0, totalLevel+1)
+	solutionCount[0] = 0
 	search(level = 1, totalLevel = totalLevel, gameMap = gameMap)
-	print u"解法总数 =",solutionCount
+			""",
+			setup = 'from __main__ import search, totalLevel, solutionCount', 
+			number = totalTimes)
+
+	print u'测试次数：', totalTimes
+	print u'总用时：', time
+	print u'平均用时：',time / totalTimes
+	print u"解法总数 =",solutionCount[0]
 

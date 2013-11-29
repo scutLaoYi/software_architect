@@ -5,6 +5,9 @@
 import os
 import sys
 import checkOk
+import timeit
+
+counter = 0
 
 def createPlayer(level, totalLevel):
 	u"""
@@ -22,24 +25,10 @@ def createPlayer(level, totalLevel):
 		return False
 	return playerFunction
 
-if __name__ == '__main__':
-	u"""
-	软件架构实验：N皇后问题--黑板风格
-	time: 2013-11-03 version:0.1b1
-	creator: scutLaoYi
-	language: Python 2.7
-	"""
-	playerList = [0]
-	try:
-		totalLevel = int(sys.argv[1])
-		if totalLevel > 10:
-			print "参数过大，使用默认参数!"
-			totalLevel = 4
-	except :
-		print "未检测到参数，使用默认参数!"
-		totalLevel = 4
-	print "N皇后问题，黑板风格，N =", totalLevel
+def searchRun(totalLevel):
+	global counter;
 	gameBoard = [0]
+	playerList = [0,]
 	for i in range(1, totalLevel + 1):
 		playerList.append(createPlayer(i, totalLevel))
 		gameBoard.append(0)
@@ -51,10 +40,37 @@ if __name__ == '__main__':
 			if nowLevel < totalLevel:
 				nowLevel += 1
 			else:
-				print gameBoard[1:]
+				#print gameBoard[1:]
 				counter += 1
 		else:
 			nowLevel -= 1
-	print "解法总数 =", counter
+
+if __name__ == '__main__':
+	u"""
+	软件架构实验：N皇后问题--黑板风格
+	time: 2013-11-03 version:0.1b1
+	creator: scutLaoYi
+	language: Python 2.7
+	"""
+
+	totalLevel = int(sys.argv[1])
+	totalTimes = int(sys.argv[2])
+
+	assert(totalLevel > 0 and totalLevel < 12)
+	assert(totalTimes > 0 and totalTimes < 1000)
+
+	print "N皇后问题，黑板风格，N =", totalLevel
+	
+	time = timeit.timeit("""
+		counter = 0
+		searchRun(totalLevel)
+			""", 
+			setup="from __main__ import totalLevel, counter, searchRun", 
+			number = totalTimes)
+
+	print u'测试次数：', totalTimes
+	print u'总用时：', time
+	print u'平均用时：',time / totalTimes
+	print u"解法总数 =", counter
 
 

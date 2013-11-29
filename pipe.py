@@ -5,6 +5,7 @@
 import os
 import sys
 import checkOk 
+import timeit
 
 def queenPipe(nowList, totalLevel, nowLevel):
 	u"""
@@ -35,8 +36,8 @@ def search(totalLevel):
 	for i in range(2, totalLevel+1):
 		nowList = queenPipe(nowList, totalLevel, i)
 #	通过逐层过滤，获取最终的解集数量
-	for solu in nowList[totalLevel]:
-		print solu[1:]
+	#for solu in nowList[totalLevel]:
+		#print solu[1:]
 
 	return len(nowList[totalLevel])
 
@@ -47,17 +48,16 @@ if __name__ == "__main__":
 	creator: scutLaoYi
 	language: Python 2.7
 	"""
-	totalLevel = 4
-	try:
-		totalLevel = int(sys.argv[1])
-		if totalLevel > 14:
-			print u"参数过大，使用默认参数4!"
-			totalLevel = 4
-	except :
-		totalLevel = 4
-		print u"未发现参数，使用默认参数4!"
-	
+	totalLevel = int(sys.argv[1])
+	totalTimes = int(sys.argv[2])
 
+	assert(totalLevel > 0 and totalLevel < 12)
+	assert(totalTimes > 0 and totalTimes < 1000)
+	
 	print u"N皇后问题，管道风格，N =", totalLevel
-	totalAmout = search(totalLevel)
-	print u"解法总数 =", totalAmout
+	totalAmout = [0,];
+	time = timeit.timeit('totalAmout[0] = search(totalLevel)', setup="from __main__ import totalAmout, search, totalLevel", number = totalTimes)
+	print u'测试次数：', totalTimes
+	print u'总用时：', time
+	print u'平均用时：',time / totalTimes
+	print u"解法总数 =", totalAmout[0]
