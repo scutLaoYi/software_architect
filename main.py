@@ -18,8 +18,12 @@ if __name__ == '__main__':
 			3:'blackboard'
 			}
 
-	totalLevel = input('N = ')
-	totalTimes = input('Testing times = ')
+	totalLevel = input('输入N(1-14) = ')
+	totalTimes = input('输入重复测试次数(1-999) = ')
+	 
+	assert(totalLevel < 15 and totalLevel > 0)
+	assert(totalTimes < 1000 and totalTimes > 0)
+
 	print """
 	Choose a style:
 	0:call and return

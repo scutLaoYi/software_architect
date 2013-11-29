@@ -14,9 +14,13 @@ def createPlayer(level, totalLevel):
 	黑板玩家创建函数
 	创建并返回闭包
 	每个闭包为单独一层黑板的绘制者
-	检测当前状态是否正确，返回结果
 	"""
 	def playerFunction(gameBoard):
+		u"""
+		从最左端开始扫描当前层
+		找到可行解，返回True
+		搜索到最右端未找到可行解，返回False
+		"""
 		while gameBoard[level] < totalLevel:
 			gameBoard[level] += 1
 			if checkOk.isOk(gameBoard, level, gameBoard[level]):
@@ -26,6 +30,12 @@ def createPlayer(level, totalLevel):
 	return playerFunction
 
 def searchRun(totalLevel):
+	u"""
+	搜索主函数
+	初始化所有变量，
+	通过N的数量调用createPlayer函数初始化对应的闭包
+	利用一个指针移动并运行对应闭包模拟多线程操作
+	"""
 	global counter;
 	gameBoard = [0]
 	playerList = [0,]
@@ -37,12 +47,14 @@ def searchRun(totalLevel):
 	counter = 0
 	while nowLevel > 0:
 		if playerList[nowLevel](gameBoard): 
+			#若当前层找到可行解，运行下一层搜索
+			#已是最底层则记录一个可行解
 			if nowLevel < totalLevel:
 				nowLevel += 1
 			else:
-				#print gameBoard[1:]
 				counter += 1
 		else:
+			#当前层没有找到可行解，退回上一层继续搜索
 			nowLevel -= 1
 
 if __name__ == '__main__':
@@ -55,9 +67,6 @@ if __name__ == '__main__':
 
 	totalLevel = int(sys.argv[1])
 	totalTimes = int(sys.argv[2])
-
-	assert(totalLevel > 0 and totalLevel < 12)
-	assert(totalTimes > 0 and totalTimes < 1000)
 
 	print "N皇后问题，黑板风格，N =", totalLevel
 	
